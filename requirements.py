@@ -1,0 +1,5 @@
+streamlit
+audiocraft
+soundfile
+numpy==1.26.4
+transformers==4.35.2
