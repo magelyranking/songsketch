@@ -1,16 +1,5 @@
 streamlit
-
-# PyTorch CPU (compatibles cloud)
-torch==2.1.0+cpu
-torchaudio==2.1.0+cpu
-torchvision==0.16.0+cpu
---extra-index-url https://download.pytorch.org/whl/cpu
-
-# Hugging Face
-transformers==4.35.2
-huggingface-hub==0.17.3
-
-# Audio utils
+transformers
+torch
+torchaudio
 soundfile
-numpy==1.26.4
-librosa
