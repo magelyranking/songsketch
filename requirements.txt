@@ -1,11 +1,12 @@
 streamlit
 
-# PyTorch (version stable supportée par HuggingFace + Streamlit Cloud)
-torch==2.1.0
-torchaudio==2.1.0
-torchvision==0.16.0
+# PyTorch CPU (compat cloud)
+torch==2.1.0+cpu
+torchaudio==2.1.0+cpu
+torchvision==0.16.0+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 
-# Hugging Face (MusicGen)
+# Hugging Face
 transformers==4.35.2
 huggingface-hub==0.17.3
 
