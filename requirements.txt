@@ -1,5 +1,7 @@
-streamlit
-transformers
-torch
+streamlit==1.39.0
+openai==1.52.2
+torch==2.5.1
+transformers==4.44.2
+scipy==1.14.1
 torchaudio
 soundfile
