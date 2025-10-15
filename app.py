@@ -1,29 +1,50 @@
 import streamlit as st
-import torch
+from openai import OpenAI
 from transformers import AutoProcessor, MusicgenForConditionalGeneration
+import torch
+import scipy
 
-# Charger MusicGen depuis HuggingFace
-@st.cache_resource
-def load_model():
-    processor = AutoProcessor.from_pretrained("facebook/musicgen-small")
-    model = MusicgenForConditionalGeneration.from_pretrained("facebook/musicgen-small")
-    return processor, model
+# OpenAI client
+client = OpenAI()
 
-processor, model = load_model()
+# Streamlit config
+st.set_page_config(page_title="SongSketch", page_icon="🎵")
+st.title("🎵 SongSketch - Paroles & Musique")
 
-st.title("🎶 AI SongSketch (Démo Cloud)")
-text = st.text_input("Décris ta musique :", "A happy pop melody with piano and claps")
+# Formulaire
+with st.form("song_form"):
+    titre = st.text_input("Titre de la chanson", "Ma chanson")
+    theme = st.text_area("Idée / style (ex: rap, rock, nostalgie...)")
+    submit = st.form_submit_button("Générer")
 
-if st.button("Générer"):
-    with st.spinner("⏳ Génération de la musique en cours..."):
-        inputs = processor(text=[text], padding=True, return_tensors="pt")
+if submit:
+    # Étape 1 : Génération paroles avec OpenAI
+    st.subheader("📝 Paroles générées")
+    prompt = f"Écris une chanson intitulée '{titre}' sur le thème : {theme}. Format couplet/refrain."
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    paroles = response.choices[0].message.content
+    st.text_area("Paroles :", paroles, height=300)
+
+    # Étape 2 : Génération musique avec MusicGen
+    st.subheader("🎶 Instrumental généré")
+    with st.spinner("Création de la musique..."):
+        model = MusicgenForConditionalGeneration.from_pretrained("facebook/musicgen-small")
+        processor = AutoProcessor.from_pretrained("facebook/musicgen-small")
+
+        inputs = processor(
+            text=[f"instrumental {theme}"],
+            padding=True,
+            return_tensors="pt"
+        )
+
         audio_values = model.generate(**inputs, max_new_tokens=256)
 
-        # Conversion en numpy pour sauvegarder
-        audio_array = audio_values[0, 0].cpu().numpy().astype("float32")
+        # Sauvegarde en wav
+        sampling_rate = model.config.audio_encoder.sampling_rate
+        scipy.io.wavfile.write("output_song.wav", rate=sampling_rate,
+                               data=audio_values[0, 0].cpu().numpy())
 
-        import soundfile as sf
-        sf.write("output.wav", audio_array, 32000)
-
-        st.audio("output.wav")
-        st.success("✅ Musique générée avec succès !")
+        st.audio("output_song.wav", format="audio/wav")
