@@ -1,5 +1,15 @@
 streamlit
-audiocraft
+
+# PyTorch (version stable supportée par HuggingFace + Streamlit Cloud)
+torch==2.1.0
+torchaudio==2.1.0
+torchvision==0.16.0
+
+# Hugging Face (MusicGen)
+transformers==4.35.2
+huggingface-hub==0.17.3
+
+# Audio utils
 soundfile
 numpy==1.26.4
-transformers==4.35.2
+librosa
