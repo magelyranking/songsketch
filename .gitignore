@@ -1,3 +1,31 @@
+# macOS
 .DS_Store
+
+# Fichiers audio générés
 *.wav
-start.sh
+*.mp3
+*.ogg
+
+# Streamlit & Python cache
+__pycache__/
+# macOS
+.DS_Store
+
+# Fichiers audio générés
+*.wav
+*.mp3
+*.ogg
+
+# Streamlit & Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+*.egg-info/
+.envrc
+
+# Fichiers locaux
+requirements-local.txt
+
