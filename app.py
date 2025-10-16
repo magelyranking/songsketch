@@ -9,20 +9,28 @@ try:
     from transformers import AutoProcessor, MusicgenForConditionalGeneration
 except ImportError:
     HAS_MUSIC = False
+cd ~/songsketch
+nano app.py
+git status
+git add app.py
+git commit -m "Update app.py: auto-switch between lyrics-only (Cloud) and lyrics+music (local)"
+git push origin main
+cd ~/songsketch
 
-# OpenAI client
-client = OpenAI()
+# 1. Ouvre app.py et colle le code que je t’ai donné
+nano app.py
+# → colle le code
+# → Ctrl+O (sauvegarder), Entrée
+# → Ctrl+X (quitter)
 
-# Streamlit config
-st.set_page_config(page_title="SongSketch", page_icon="🎵")
-st.title("🎵 SongSketch - Paroles & Musique")
+# 2. Vérifie que git détecte bien le changement
+git status
 
-# Formulaire
-with st.form("song_form"):
-    titre = st.text_input("Titre de la chanson", "Ma chanson")
-    theme = st.text_area("Idée / style (ex: rap, rock, nostalgie...)")
-    submit = st.form_submit_button("Générer")
+# 3. Ajoute et valide le fichier modifié
+git add app.py
+git commit -m "Update app.py: auto-switch between lyrics-only (Cloud) and lyrics+music (local)"
 
+<<<<<<< HEAD
 if submit:
     # Étape 1 : Génération paroles
     st.subheader("📝 Paroles générées")
@@ -59,3 +67,7 @@ if submit:
             st.audio("output_song.wav", format="audio/wav")
     else:
         st.info("⚠️ Mode Cloud : génération de musique désactivée (torch non disponible).")
+=======
+# 4. Pousse sur GitHub
+git push origin main
+>>>>>>> b25c72e (Update app.py: auto-switch between lyrics-only (Cloud) and lyrics+music (local))
