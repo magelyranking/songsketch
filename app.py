@@ -9,28 +9,20 @@ try:
     from transformers import AutoProcessor, MusicgenForConditionalGeneration
 except ImportError:
     HAS_MUSIC = False
-cd ~/songsketch
-nano app.py
-git status
-git add app.py
-git commit -m "Update app.py: auto-switch between lyrics-only (Cloud) and lyrics+music (local)"
-git push origin main
-cd ~/songsketch
 
-# 1. Ouvre app.py et colle le code que je t’ai donné
-nano app.py
-# → colle le code
-# → Ctrl+O (sauvegarder), Entrée
-# → Ctrl+X (quitter)
+# OpenAI client
+client = OpenAI()
 
-# 2. Vérifie que git détecte bien le changement
-git status
+# Streamlit config
+st.set_page_config(page_title="SongSketch", page_icon="🎵")
+st.title("🎵 SongSketch - Paroles & Musique")
 
-# 3. Ajoute et valide le fichier modifié
-git add app.py
-git commit -m "Update app.py: auto-switch between lyrics-only (Cloud) and lyrics+music (local)"
+# Formulaire
+with st.form("song_form"):
+    titre = st.text_input("Titre de la chanson", "Ma chanson")
+    theme = st.text_area("Idée / style (ex: rap, rock, nostalgie...)")
+    submit = st.form_submit_button("Générer")
 
-<<<<<<< HEAD
 if submit:
     # Étape 1 : Génération paroles
     st.subheader("📝 Paroles générées")
@@ -45,7 +37,7 @@ if submit:
     # Étape 2 : Génération musique (si possible)
     if HAS_MUSIC:
         st.subheader("🎶 Instrumental généré")
-        with st.spinner("Création de la musique..."):
+        with st.spinner("Création de la musique (~20s)..."):
             model = MusicgenForConditionalGeneration.from_pretrained("facebook/musicgen-small")
             processor = AutoProcessor.from_pretrained("facebook/musicgen-small")
 
@@ -55,7 +47,8 @@ if submit:
                 return_tensors="pt"
             )
 
-            audio_values = model.generate(**inputs, max_new_tokens=256)
+            # 1024 tokens ≈ 20 secondes
+            audio_values = model.generate(**inputs, max_new_tokens=1024)
 
             sampling_rate = model.config.audio_encoder.sampling_rate
             scipy.io.wavfile.write(
@@ -67,7 +60,4 @@ if submit:
             st.audio("output_song.wav", format="audio/wav")
     else:
         st.info("⚠️ Mode Cloud : génération de musique désactivée (torch non disponible).")
-=======
-# 4. Pousse sur GitHub
-git push origin main
->>>>>>> b25c72e (Update app.py: auto-switch between lyrics-only (Cloud) and lyrics+music (local))
+
