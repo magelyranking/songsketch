@@ -5,16 +5,7 @@
 *.wav
 *.mp3
 *.ogg
-
-# Streamlit & Python cache
-__pycache__/
-# macOS
-.DS_Store
-
-# Fichiers audio générés
-*.wav
-*.mp3
-*.ogg
+output_song.wav
 
 # Streamlit & Python cache
 __pycache__/
