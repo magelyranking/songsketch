@@ -11,7 +11,8 @@ except ImportError:
     HAS_MUSIC = False
 
 # OpenAI client
-client = OpenAI()
+api_key = st.secrets["OPENAI_API_KEY)
+client = Openai(api_key=api_key)
 
 # Streamlit config
 st.set_page_config(page_title="SongSketch", page_icon="🎵")
