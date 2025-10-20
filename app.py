@@ -11,7 +11,7 @@ except ImportError:
     HAS_MUSIC = False
 
 # OpenAI client
-api_key = st.secrets["OPENAI_API_KEY)
+api_key = st.secrets["OPENAI_API_KEY")
 client = Openai(api_key=api_key)
 
 # Streamlit config
